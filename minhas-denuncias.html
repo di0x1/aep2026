@@ -8,7 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="minhas-denuncias.css">
+     <link rel="stylesheet" href="main.css">
+     <link rel="stylesheet" href="dark-mode.css">
 </head>
 
 <body>
@@ -71,7 +72,7 @@
                     <!-- Imagem -->
                     <div class="col-md-5">
                         <div class="denuncia-imagem">
-                            <img src="imagens/denuncia-exemplo.jpg" alt="Foto da denúncia" class="img-fluid rounded-4">
+                            <img src="imagens/denuncia2.jpg" alt="Foto da denúncia" class="img-fluid rounded-4">
                         </div>
                     </div>
 
@@ -153,7 +154,7 @@
                 <div class="compartilhar-section mt-4">
                     <h6 class="compartilhar-title">Compartilhe sua denúncia</h6>
                     <p class="text-muted small mb-3">Ajude a conscientizar mais pessoas sobre descarte irregular de resíduos.</p>
-                    <button class="btn btn-outline-success btn-compartilhar">
+                    <button class="btn btn-outline-success btn-compartilhar" onclick="if(navigator.share){navigator.share({title:'Minha Denúncia EcoTech',text:'Confira minha denúncia ambiental no EcoTech!',url:window.location.href});}else{alert('Compartilhe esta página manualmente!');}">
                         <i class="bi bi-share"></i>
                         Compartilhar
                     </button>

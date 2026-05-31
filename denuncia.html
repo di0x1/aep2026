@@ -8,7 +8,90 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="denuncia.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    
+    <style>
+        #mapa-denuncia {
+            height: 450px;
+            width: 100%;
+            border-radius: 12px;
+            z-index: 1;
+        }
+        .map-section {
+            position: relative;
+        }
+        /* Marcador arrastável */
+        .marcador-denuncia {
+            width: 36px;
+            height: 36px;
+            background: #dc3545;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.4);
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .marcador-denuncia i {
+            transform: rotate(45deg);
+            color: white;
+            font-size: 14px;
+        }
+        /* Info do endereço selecionado */
+        .endereco-selecionado {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 12px;
+            display: none;
+        }
+        .endereco-selecionado.mostrar {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Resultados da busca */
+        .resultados-busca {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+        }
+        .resultados-busca.mostrar {
+            display: block;
+        }
+        .resultado-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background 0.15s;
+        }
+        .resultado-item:hover {
+            background: #f0f7ff;
+        }
+        .resultado-item:last-child {
+            border-bottom: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -82,38 +165,257 @@
             <div class="map-section">
                 <h5 class="section-title mb-3">Selecione o local da ocorrência</h5>
 
-                <div class="search-box mb-3">
+                <div class="search-box mb-3 position-relative">
                     <i class="bi bi-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar endereço no mapa">
+                    <input type="text" class="form-control" id="busca-endereco" placeholder="Buscar endereço em Maringá (ex: Av. Colombo, 1000)">
+                    <div class="resultados-busca" id="resultados-busca"></div>
                 </div>
 
-                <div class="map-placeholder">
-                    <div class="map-content">
-                        <i class="bi bi-geo-alt-fill map-pin"></i>
-                        <span class="map-city">Maringá</span>
+                <div id="mapa-denuncia"></div>
+                
+                <!-- Endereço selecionado -->
+                <div class="endereco-selecionado" id="endereco-selecionado">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-geo-alt-fill text-success"></i>
+                        <div>
+                            <small class="text-muted">Local selecionado:</small>
+                            <p class="mb-0 fw-semibold" id="texto-endereco">Av. Colombo, 3042 - Zona 07</p>
+                            <small class="text-muted" id="texto-coordenadas">-23.4020, -51.9250</small>
+                        </div>
                     </div>
-                    <div class="map-controls">
-                        <button class="btn btn-light btn-sm mb-2"><i class="bi bi-plus-lg"></i></button>
-                        <button class="btn btn-light btn-sm"><i class="bi bi-dash-lg"></i></button>
-                    </div>
-                    <button class="btn btn-light btn-sm use-location">
-                        <i class="bi bi-geo-alt"></i>
-                        Usar minha localização
-                    </button>
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="action-buttons d-flex justify-content-end gap-3 mt-4">
-                <button class="btn btn-outline-secondary btn-cancel">Cancelar</button>
-                <button class="btn btn-success btn-next">Próximo</button>
+                <a href="inicio.html" class="btn btn-outline-secondary btn-cancel text-decoration-none">Cancelar</a>
+                <button class="btn btn-success btn-next" id="btn-proximo">Próximo</button>
             </div>
         </main>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+    <!-- Script do Mapa -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ============================================
+            // LIMITES GEOGRÁFICOS DE MARINGÁ/PR
+            // ============================================
+            const limitesMaringa = L.latLngBounds(
+                [-23.58, -52.08],
+                [-23.28, -51.78]
+            );
+            
+            const centroMaringa = [-23.4273, -51.9375];
+            
+            // Inicializa o mapa
+            const map = L.map('mapa-denuncia', {
+                center: centroMaringa,
+                zoom: 13,
+                maxBounds: limitesMaringa,
+                maxBoundsViscosity: 1.0,
+                minZoom: 11,
+                maxZoom: 18
+            });
+            
+            // Camada do OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // ============================================
+            // MARCADOR DA DENÚNCIA
+            // ============================================
+            let marcadorAtual = null;
+            let coordenadasSelecionadas = null;
+            
+            const iconeMarcador = L.divIcon({
+                html: '<div class="marcador-denuncia"><i class="bi bi-exclamation-lg"></i></div>',
+                className: '',
+                iconSize: [36, 36],
+                iconAnchor: [18, 36]
+            });
+            
+            // Função para adicionar/atualizar marcador
+            function adicionarMarcador(lat, lng) {
+                if (marcadorAtual) {
+                    map.removeLayer(marcadorAtual);
+                }
+                marcadorAtual = L.marker([lat, lng], { icon: iconeMarcador, draggable: true }).addTo(map);
+                coordenadasSelecionadas = { lat, lng };
+                
+                // Atualiza texto
+                document.getElementById('texto-coordenadas').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                document.getElementById('endereco-selecionado').classList.add('mostrar');
+                
+                // Evento de arrastar o marcador
+                marcadorAtual.on('dragend', function(e) {
+                    const pos = e.target.getLatLng();
+                    coordenadasSelecionadas = { lat: pos.lat, lng: pos.lng };
+                    document.getElementById('texto-coordenadas').textContent = `${pos.lat.toFixed(4)}, ${pos.lng.toFixed(4)}`;
+                    buscarEnderecoReverse(pos.lat, pos.lng);
+                });
+            }
+            
+            // ============================================
+            // CLIQUE NO MAPA = MARCA LOCAL
+            // ============================================
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+                adicionarMarcador(lat, lng);
+                buscarEnderecoReverse(lat, lng);
+            });
+            
+            // ============================================
+            // BOTÃO "USAR MINHA LOCALIZAÇÃO"
+            // ============================================
+            const btnLocalizacao = L.control({ position: 'topright' });
+            btnLocalizacao.onAdd = function() {
+                const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+                div.innerHTML = `
+                    <button class="btn btn-light btn-sm" id="btn-usar-localizacao" 
+                        style="display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:13px;border:2px solid rgba(0,0,0,0.2);border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                        <i class="bi bi-geo-alt-fill text-primary"></i>
+                        <span>Usar minha localização</span>
+                    </button>
+                `;
+                return div;
+            };
+            btnLocalizacao.addTo(map);
+            
+            document.getElementById('btn-usar-localizacao').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(pos) {
+                            const lat = pos.coords.latitude;
+                            const lng = pos.coords.longitude;
+                            map.flyTo([lat, lng], 16);
+                            adicionarMarcador(lat, lng);
+                            buscarEnderecoReverse(lat, lng);
+                        },
+                        function() {
+                            alert('Não foi possível obter sua localização. Verifique as permissões do navegador.');
+                        }
+                    );
+                } else {
+                    alert('Geolocalização não suportada neste navegador.');
+                }
+            });
+            
+            // ============================================
+            // BUSCA POR ENDEREÇO (Nominatim)
+            // ============================================
+            const inputBusca = document.getElementById('busca-endereco');
+            const divResultados = document.getElementById('resultados-busca');
+            let timeoutBusca = null;
+            
+            inputBusca.addEventListener('input', function() {
+                clearTimeout(timeoutBusca);
+                const query = this.value.trim();
+                
+                if (query.length < 3) {
+                    divResultados.classList.remove('mostrar');
+                    return;
+                }
+                
+                // Debounce: espera 500ms após parar de digitar
+                timeoutBusca = setTimeout(() => {
+                    buscarEndereco(query);
+                }, 500);
+            });
+            
+            // Fecha resultados ao clicar fora
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-box')) {
+                    divResultados.classList.remove('mostrar');
+                }
+            });
+            
+            async function buscarEndereco(query) {
+                try {
+                    // Limita a busca ao bounding box de Maringá
+                    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Maringá, Paraná, Brasil')}&bounded=1&viewbox=-52.08,-23.28,-51.78,-23.58`;
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    divResultados.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        divResultados.innerHTML = '<div class="resultado-item text-muted">Nenhum resultado encontrado em Maringá</div>';
+                        divResultados.classList.add('mostrar');
+                        return;
+                    }
+                    
+                    data.slice(0, 5).forEach(result => {
+                        const item = document.createElement('div');
+                        item.className = 'resultado-item';
+                        item.innerHTML = `<i class="bi bi-geo-alt text-primary me-2"></i>${result.display_name}`;
+                        item.addEventListener('click', function() {
+                            const lat = parseFloat(result.lat);
+                            const lng = parseFloat(result.lon);
+                            map.flyTo([lat, lng], 16);
+                            adicionarMarcador(lat, lng);
+                            document.getElementById('texto-endereco').textContent = result.display_name.split(',')[0];
+                            divResultados.classList.remove('mostrar');
+                            inputBusca.value = result.display_name.split(',')[0];
+                        });
+                        divResultados.appendChild(item);
+                    });
+                    
+                    divResultados.classList.add('mostrar');
+                    
+                } catch (error) {
+                    console.error('Erro na busca:', error);
+                }
+            }
+            
+            // Reverse geocoding (coordenadas → endereço)
+            async function buscarEnderecoReverse(lat, lng) {
+                try {
+                    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.display_name) {
+                        const enderecoCurto = data.display_name.split(',').slice(0, 3).join(', ');
+                        document.getElementById('texto-endereco').textContent = enderecoCurto;
+                    }
+                } catch (error) {
+                    console.error('Erro no reverse geocoding:', error);
+                }
+            }
+            
+            // ============================================
+            // BOTÃO PRÓXIMO (valida se marcou local)
+            // ============================================
+            document.getElementById('btn-proximo').addEventListener('click', function() {
+                if (!coordenadasSelecionadas) {
+                    alert('Por favor, selecione um local no mapa antes de continuar.');
+                    return;
+                }
+                // Avança para o passo 2 (categoria)
+                localStorage.setItem('denuncia_lat', coordenadasSelecionadas.lat);
+                localStorage.setItem('denuncia_lng', coordenadasSelecionadas.lng);
+                localStorage.setItem('denuncia_endereco', document.getElementById('texto-endereco').textContent);
+                alert('Localização salva! Próxima etapa: Categoria (em desenvolvimento)');
+                // window.location.href = 'denuncia-categoria.html';
+            });
+            
+        });
+    </script>
 </body>
 
 </html>

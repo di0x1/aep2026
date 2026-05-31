@@ -8,7 +8,42 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="inicio.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    
+    <style>
+        #mapa-real-mini {
+            height: 320px;
+            width: 100%;
+            border-radius: 12px;
+            z-index: 1;
+        }
+        .mapa-card {
+            height: 100%;
+        }
+        /* Ícones personalizados das denúncias */
+        .custom-pin {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: 2px solid white;
+            font-size: 12px;
+            color: white;
+        }
+        .pin-laranja-real { background: #fd7e14; }
+        .pin-verde-real { background: #28a745; }
+        .pin-roxo-real { background: #6f42c1; }
+    </style>
 </head>
 
 <body>
@@ -62,28 +97,28 @@
                     <div class="stat-card verde">
                         <span class="stat-num">12</span>
                         <span class="stat-desc">Denúncias realizadas</span>
-                        <a href="#" class="stat-link">Ver histórico <i class="bi bi-arrow-right"></i></a>
+                        <a href="minhas-denuncias.html" class="stat-link">Ver histórico <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="stat-card azul">
                         <span class="stat-num">8</span>
                         <span class="stat-desc">Em andamento</span>
-                        <a href="#" class="stat-link">Acompanhar <i class="bi bi-arrow-right"></i></a>
+                        <a href="minhas-denuncias.html" class="stat-link">Acompanhar <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="stat-card amarelo">
                         <span class="stat-num">4</span>
                         <span class="stat-desc">Concluídas</span>
-                        <a href="#" class="stat-link">Ver resultados <i class="bi bi-arrow-right"></i></a>
+                        <a href="minhas-denuncias.html" class="stat-link">Ver resultados <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="stat-card roxo">
                         <span class="stat-num">1.250 kg</span>
                         <span class="stat-desc">Resíduos impactados</span>
-                        <a href="#" class="stat-link">Saiba mais <i class="bi bi-arrow-right"></i></a>
+                        <a href="educacao-ambiental.html" class="stat-link">Saiba mais <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -96,7 +131,8 @@
                         <h5 class="section-title mb-3">Suas denúncias recentes</h5>
 
                         <div class="denuncia-lista">
-                            <div class="denuncia-row d-flex align-items-center gap-3">
+                            <!-- Denúncia 1 - Av. Colombo, 4230 (Em andamento - laranja) -->
+                            <div class="denuncia-row d-flex align-items-center gap-3" data-lat="-23.4020" data-lng="-51.9250" data-status="andamento">
                                 <img src="imagens/denuncia1.jpg" class="denuncia-thumb" alt="Entulho">
                                 <div class="denuncia-info flex-fill">
                                     <div class="denuncia-cat">Entulho / Construção</div>
@@ -106,7 +142,8 @@
                                 <span class="denuncia-data">20/05/2025</span>
                             </div>
 
-                            <div class="denuncia-row d-flex align-items-center gap-3">
+                            <!-- Denúncia 2 - R. Pioneiro França de Morais, 256 (Em andamento - laranja) -->
+                            <div class="denuncia-row d-flex align-items-center gap-3" data-lat="-23.4150" data-lng="-51.9380" data-status="andamento">
                                 <img src="imagens/denuncia2.jpg" class="denuncia-thumb" alt="Móveis">
                                 <div class="denuncia-info flex-fill">
                                     <div class="denuncia-cat">Móveis / Madeira</div>
@@ -116,7 +153,8 @@
                                 <span class="denuncia-data">18/05/2025</span>
                             </div>
 
-                            <div class="denuncia-row d-flex align-items-center gap-3">
+                            <!-- Denúncia 3 - Av. Mandacaru, 1380 (Concluída - verde) -->
+                            <div class="denuncia-row d-flex align-items-center gap-3" data-lat="-23.4149" data-lng="-51.9549" data-status="concluida">
                                 <img src="imagens/denuncia3.jpg" class="denuncia-thumb" alt="Plásticos">
                                 <div class="denuncia-info flex-fill">
                                     <div class="denuncia-cat">Plásticos</div>
@@ -126,7 +164,9 @@
                                 <span class="denuncia-data">12/05/2025</span>
                             </div>
 
-                            <div class="denuncia-row d-flex align-items-center gap-3">
+                            <!-- Denúncia 4 - R. das Azaléias, 88 (Concluída - verde) -->
+                            <!-- Coordenadas reais: -23.4408070, -51.9631030 -->
+                            <div class="denuncia-row d-flex align-items-center gap-3" data-lat="-23.4408" data-lng="-51.9631" data-status="concluida">
                                 <img src="imagens/denuncia4.jpg" class="denuncia-thumb" alt="Eletrônicos">
                                 <div class="denuncia-info flex-fill">
                                     <div class="denuncia-cat">Eletrônicos</div>
@@ -137,22 +177,15 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-ver-todas w-100 mt-3">Ver todas as denúncias</button>
+                        <a href="minhas-denuncias.html" class="btn btn-ver-todas w-100 mt-3 text-decoration-none">Ver todas as denúncias</a>
                     </div>
                 </div>
 
-                <!-- Mapa -->
+                <!-- Mapa Real -->
                 <div class="col-lg-5">
                     <div class="mapa-card">
                         <h5 class="section-title mb-3">Denúncias no mapa</h5>
-                        <div class="mapa-mini">
-                            <div class="mapa-grid"></div>
-                            <div class="mapa-pin pin-laranja" style="top: 20%; left: 30%;"><i class="bi bi-geo-alt-fill"></i></div>
-                            <div class="mapa-pin pin-laranja" style="top: 35%; left: 60%;"><i class="bi bi-geo-alt-fill"></i></div>
-                            <div class="mapa-pin pin-verde" style="top: 55%; left: 45%;"><i class="bi bi-geo-alt-fill"></i></div>
-                            <div class="mapa-pin pin-roxo" style="top: 70%; left: 75%;"><i class="bi bi-geo-alt-fill"></i></div>
-                            <span class="mapa-cidade">Maringá</span>
-                        </div>
+                        <div id="mapa-real-mini"></div>
                         <div class="mapa-legenda d-flex gap-3 mt-3">
                             <span class="legenda-item"><span class="legenda-dot laranja"></span> Em andamento</span>
                             <span class="legenda-item"><span class="legenda-dot verde"></span> Concluída</span>
@@ -180,7 +213,7 @@
                         <div class="dica-texto">
                             <h5>Dica ambiental do dia</h5>
                             <p class="text-muted mb-3">Separe corretamente seus resíduos recicláveis e contribua para um futuro mais sustentável!</p>
-                            <button class="btn btn-dica">Saiba mais</button>
+                            <a href="educacao-ambiental.html" class="btn btn-dica text-decoration-none">Saiba mais</a>
                         </div>
                         <div class="dica-img">
                             <img src="imagens/folha-dica.png" alt="Folha">
@@ -191,9 +224,159 @@
         </main>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+    <!-- Script do Mapa -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ============================================
+            // LIMITES GEOGRÁFICOS DE MARINGÁ/PR
+            // ============================================
+            const limitesMaringa = L.latLngBounds(
+                [-23.58, -52.08],  // Sudoeste
+                [-23.28, -51.78]   // Nordeste
+            );
+            
+            const centroMaringa = [-23.4273, -51.9375];
+            
+            // Inicializa o mapa mini
+            const map = L.map('mapa-real-mini', {
+                center: centroMaringa,
+                zoom: 12,
+                maxBounds: limitesMaringa,
+                maxBoundsViscosity: 1.0,
+                minZoom: 11,
+                maxZoom: 18,
+                zoomControl: false,         // Esconde controles de zoom (mais limpo)
+                attributionControl: false   // Esconde atribuição (opcional, pode remover)
+            });
+            
+            // Adiciona camada do OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Atribuição minimalista no canto
+            L.control.attribution({position: 'bottomright', prefix: false}).addTo(map);
+            
+            // ============================================
+            // DADOS DAS DENÚNCIAS
+            // ============================================
+            const denuncias = [
+                {
+                    lat: -23.4020,
+                    lng: -51.9250,
+                    nome: 'Entulho / Construção',
+                    endereco: 'Av. Colombo, 4230 - Zona 7',
+                    status: 'andamento',
+                    data: '20/05/2025'
+                },
+                {
+                    lat: -23.4150,
+                    lng: -51.9380,
+                    nome: 'Móveis / Madeira',
+                    endereco: 'R. Pioneiro Antônio França de Morais, 256',
+                    status: 'andamento',
+                    data: '18/05/2025'
+                },
+                {
+                    lat: -23.4149,   // Av. Mandacaru (real)
+                    lng: -51.9549,
+                    nome: 'Plásticos',
+                    endereco: 'Av. Mandacaru, 1380',
+                    status: 'concluida',
+                    data: '12/05/2025'
+                },
+                {
+                    lat: -23.4408,   // R. das Azaléias (real: -23.4408070, -51.9631030)
+                    lng: -51.9631,
+                    nome: 'Eletrônicos',
+                    endereco: 'R. das Azaléias, 88',
+                    status: 'concluida',
+                    data: '05/05/2025'
+                }
+            ];
+            
+            const markers = {};
+            const coresStatus = {
+                andamento: { cor: '#fd7e14', classe: 'pin-laranja-real' },
+                concluida: { cor: '#28a745', classe: 'pin-verde-real' },
+                recebida:  { cor: '#6f42c1', classe: 'pin-roxo-real' }
+            };
+            
+            // ============================================
+            // CRIA MARCADORES PERSONALIZADOS
+            // ============================================
+            denuncias.forEach((d, index) => {
+                const config = coresStatus[d.status];
+                
+                const iconeHtml = `<div class="custom-pin ${config.classe}"><i class="bi bi-geo-alt-fill"></i></div>`;
+                
+                const iconePersonalizado = L.divIcon({
+                    html: iconeHtml,
+                    className: '',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
+                });
+                
+                const marker = L.marker([d.lat, d.lng], { icon: iconePersonalizado }).addTo(map);
+                
+                const popupContent = `
+                    <div style="min-width: 180px; font-family: system-ui, sans-serif;">
+                        <h6 style="margin-bottom: 4px; font-weight: 700; font-size: 0.95em;">${d.nome}</h6>
+                        <p style="margin-bottom: 2px; font-size: 0.8em; color: #555;"><i class="bi bi-geo-alt"></i> ${d.endereco}</p>
+                        <p style="margin-bottom: 0; font-size: 0.75em; color: #888;">
+                            <span style="color:${config.cor}; font-weight:600;">●</span> ${d.status === 'andamento' ? 'Em andamento' : 'Concluída'} · ${d.data}
+                        </p>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markers[index] = marker;
+            });
+            
+            // Ajusta zoom para mostrar todas as denúncias
+            const grupo = L.featureGroup(Object.values(markers));
+            map.fitBounds(grupo.getBounds().pad(0.2));
+            
+            // ============================================
+            // INTERAÇÃO: CLICAR NA LISTA DESTACA NO MAPA
+            // ============================================
+            const itensLista = document.querySelectorAll('.denuncia-row');
+            
+            itensLista.forEach((item, index) => {
+                item.style.cursor = 'pointer';
+                
+                item.addEventListener('click', function() {
+                    const lat = parseFloat(this.dataset.lat);
+                    const lng = parseFloat(this.dataset.lng);
+                    
+                    // Remove destaque de todos
+                    itensLista.forEach(i => i.style.backgroundColor = '');
+                    // Destaca o clicado
+                    this.style.backgroundColor = 'rgba(13, 110, 253, 0.06)';
+                    
+                    // Centraliza no mapa
+                    map.flyTo([lat, lng], 15, { duration: 1 });
+                    
+                    // Abre popup
+                    if (markers[index]) {
+                        setTimeout(() => markers[index].openPopup(), 600);
+                    }
+                });
+            });
+            
+        });
+    </script>
 </body>
 
 </html>

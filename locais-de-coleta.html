@@ -8,7 +8,51 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="locais-de-coleta.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    
+    <style>
+        #mapa-real {
+            height: 100%;
+            min-height: 500px;
+            width: 100%;
+            border-radius: 12px;
+            z-index: 1;
+        }
+        .mapa-container {
+            height: 100%;
+            min-height: 500px;
+        }
+        /* Ícones personalizados com cores do seu design */
+        .custom-marker {
+            background: white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            border: 3px solid;
+            font-size: 16px;
+        }
+        .marker-verde { border-color: #28a745; color: #28a745; }
+        .marker-azul { border-color: #0d6efd; color: #0d6efd; }
+        .marker-laranja { border-color: #fd7e14; color: #fd7e14; }
+        .marker-vermelho { border-color: #dc3545; color: #dc3545; }
+        
+        /* Destaque ao clicar no item da lista */
+        .local-item.ativo {
+            background-color: rgba(13, 110, 253, 0.08);
+            border-left: 3px solid #0d6efd;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,7 +96,6 @@
                     </div>
                     <div class="user-info d-flex align-items-center gap-2">
                         <img src="imagens/avatar.png" alt="Avatar" class="avatar-img">
-                       
                     </div>
                 </div>
             </div>
@@ -60,38 +103,38 @@
             <!-- Page Header -->
             <div class="page-header mb-4">
                 <h2 class="page-title mb-1">Locais de coleta</h2>
-                <p class="page-subtitle text-muted">Encontre os pontos de coleta mais próximos de você.</p>
+                <p class="page-subtitle text-muted">Encontre os pontos de coleta mais próximos de você em Maringá/PR.</p>
             </div>
 
             <!-- Search Bar -->
             <div class="search-bar mb-4">
                 <i class="bi bi-search search-icon"></i>
-                <input type="text" class="form-control search-input" placeholder="Buscar endereço ou bairro">
+                <input type="text" class="form-control search-input" placeholder="Buscar endereço ou bairro em Maringá">
             </div>
 
             <!-- Filter Tags -->
             <div class="filter-tags mb-4">
-                <button class="filter-btn active">
+                <button class="filter-btn active" data-tipo="todos">
                     <i class="bi bi-funnel"></i>
                     Todos os tipos
                 </button>
-                <button class="filter-btn">
+                <button class="filter-btn" data-tipo="eletronicos">
                     <i class="bi bi-plug"></i>
                     Eletrônicos
                 </button>
-                <button class="filter-btn">
+                <button class="filter-btn" data-tipo="reciclaveis">
                     <i class="bi bi-recycle"></i>
                     Recicláveis
                 </button>
-                <button class="filter-btn">
+                <button class="filter-btn" data-tipo="organicos">
                     <i class="bi bi-tree"></i>
                     Orgânicos
                 </button>
-                <button class="filter-btn">
+                <button class="filter-btn" data-tipo="entulho">
                     <i class="bi bi-trash"></i>
                     Entulho
                 </button>
-                <button class="filter-btn">
+                <button class="filter-btn" data-tipo="perigosos">
                     <i class="bi bi-exclamation-triangle"></i>
                     Perigosos
                 </button>
@@ -103,7 +146,7 @@
                 <div class="col-lg-5">
                     <div class="locais-lista">
                         <!-- Local 1 -->
-                        <div class="local-item d-flex align-items-start gap-3">
+                       <div class="local-item d-flex align-items-start gap-3" data-lat="-23.4020" data-lng="-51.9250" data-tipo="entulho">
                             <div class="local-icon verde">
                                 <i class="bi bi-shop"></i>
                             </div>
@@ -116,7 +159,7 @@
                         </div>
 
                         <!-- Local 2 -->
-                        <div class="local-item d-flex align-items-start gap-3">
+                        <div class="local-item d-flex align-items-start gap-3" data-lat="-23.4150" data-lng="-51.9380" data-tipo="reciclaveis">
                             <div class="local-icon azul">
                                 <i class="bi bi-recycle"></i>
                             </div>
@@ -129,7 +172,7 @@
                         </div>
 
                         <!-- Local 3 -->
-                        <div class="local-item d-flex align-items-start gap-3">
+                       <div class="local-item d-flex align-items-start gap-3" data-lat="-23.4149" data-lng="-51.9549" data-tipo="reciclaveis">
                             <div class="local-icon laranja">
                                 <i class="bi bi-recycle"></i>
                             </div>
@@ -142,7 +185,7 @@
                         </div>
 
                         <!-- Local 4 -->
-                        <div class="local-item d-flex align-items-start gap-3">
+                        <div class="local-item d-flex align-items-start gap-3" data-lat="-23.4272" data-lng="-51.9115" data-tipo="entulho">
                             <div class="local-icon verde">
                                 <i class="bi bi-shop"></i>
                             </div>
@@ -155,7 +198,7 @@
                         </div>
 
                         <!-- Local 5 -->
-                        <div class="local-item d-flex align-items-start gap-3">
+                       <div class="local-item d-flex align-items-start gap-3" data-lat="-23.4350" data-lng="-51.9420" data-tipo="perigosos">
                             <div class="local-icon vermelho">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </div>
@@ -169,39 +212,253 @@
                     </div>
                 </div>
 
-                <!-- Mapa Placeholder -->
+                <!-- Mapa Real -->
                 <div class="col-lg-7">
                     <div class="mapa-container">
-                        <div class="mapa-placeholder">
-                            <!-- Grid de ruas -->
-                            <div class="mapa-grid"></div>
-
-                            <!-- Pins no mapa -->
-                            <div class="mapa-pin pin-verde" style="top: 25%; left: 35%;">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div class="mapa-pin pin-azul" style="top: 40%; left: 55%;">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div class="mapa-pin pin-laranja" style="top: 55%; left: 70%;">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div class="mapa-pin pin-verde" style="top: 65%; left: 45%;">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div class="mapa-pin pin-vermelho" style="top: 75%; left: 60%;">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                        </div>
+                        <div id="mapa-real"></div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+    <!-- Script do Mapa -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ============================================
+            // LIMITES GEOGRÁFICOS DE MARINGÁ/PR
+            // Baseado nas coordenadas oficiais do IBGE
+            // Centro: -23.4273, -51.9375
+            // Área: ~488 km²
+            // ============================================
+            
+            // Bounding box aproximado de Maringá (limites norte, sul, leste, oeste)
+            const limitesMaringa = L.latLngBounds(
+                [-23.28, -52.08],  // Noroeste (canto superior esquerdo)
+                [-23.58, -51.78]   // Sudeste (canto inferior direito)
+            );
+            
+            // Centro oficial de Maringá
+            const centroMaringa = [-23.4273, -51.9375];
+            
+            // Inicializa o mapa centralizado em Maringá
+            const map = L.map('mapa-real', {
+                center: centroMaringa,
+                zoom: 13,
+                // LIMITA O MAPA AOS LIMITES DE MARINGÁ:
+                maxBounds: limitesMaringa,           // Não permite arrastar para fora
+                maxBoundsViscosity: 1.0,             // "Cola" nos limites (0=sem efeito, 1=total)
+                minZoom: 11,                         // Não deixa dar zoom out demais
+                maxZoom: 18                          // Zoom máximo permitido
+            });
+            
+            // Adiciona camada do OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // ============================================
+            // DADOS DOS LOCAIS DE COLETA EM MARINGÁ
+            // ============================================
+            
+            const locais = [
+    {
+        lat: -23.4020,
+        lng: -51.9250,
+        nome: 'Ecoponto Zona 07',
+        endereco: 'Av. Colombo, 3042 - Zona 07',
+        horario: 'Seg a Sáb: 8h às 18h',
+        tipo: 'verde',
+        categoria: 'entulho',
+        icone: 'bi-shop'
+    },
+    {
+        lat: -23.4150,
+        lng: -51.9380,
+        nome: 'Ponto de Entrega Voluntária - PEV',
+        endereco: 'Rua Pioneiro Antônio França de Moraes, 500 - Zona 02',
+        horario: 'Seg a Sáb: 7h às 17h',
+        tipo: 'azul',
+        categoria: 'reciclaveis',
+        icone: 'bi-recycle'
+    },
+    {
+        lat: -23.4149,   // ← Coordenada REAL da Av. Mandacaru
+        lng: -51.9549,   // ← Fonte: guiamapa.com
+        nome: 'Coleta Seletiva - Mandacaru',
+        endereco: 'Av. Mandacaru, 200 - Zona 01',
+        horario: 'Seg a Sáb: 8h às 17h',
+        tipo: 'laranja',
+        categoria: 'reciclaveis',
+        icone: 'bi-recycle'
+    },
+    {
+        lat: -23.4272,   // ← Coordenada REAL da Av. Brasil
+        lng: -51.9115,   // ← Fonte: guiamapa.com
+        nome: 'Ecoponto Zona 05',
+        endereco: 'Av. Brasil, 1000 - Zona 05',
+        horario: 'Seg a Sáb: 8h às 18h',
+        tipo: 'verde',
+        categoria: 'entulho',
+        icone: 'bi-shop'
+    },
+    {
+        lat: -23.4350,
+        lng: -51.9420,
+        nome: 'Central de Resíduos Perigosos',
+        endereco: 'Rua Industrial, 300 - Zona 03',
+        horario: 'Seg a Sáb: 8h às 16h',
+        tipo: 'vermelho',
+        categoria: 'perigosos',
+        icone: 'bi-exclamation-triangle'
+    }
+];
+            
+            const markers = {}; // Guarda referências dos marcadores
+            
+            // ============================================
+            // CRIA MARCADORES PERSONALIZADOS
+            // ============================================
+            
+            locais.forEach((local, index) => {
+                // Cria ícone HTML personalizado
+                const iconeHtml = `<div class="custom-marker marker-${local.tipo}"><i class="bi ${local.icone}"></i></div>`;
+                
+                const iconePersonalizado = L.divIcon({
+                    html: iconeHtml,
+                    className: '',
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 36],
+                    popupAnchor: [0, -36]
+                });
+                
+                const marker = L.marker([local.lat, local.lng], { icon: iconePersonalizado }).addTo(map);
+                
+                // Popup com informações
+                const popupContent = `
+                    <div style="min-width: 220px; font-family: system-ui, sans-serif;">
+                        <h6 style="margin-bottom: 6px; font-weight: 700; color: #333;">${local.nome}</h6>
+                        <p style="margin-bottom: 4px; font-size: 0.85em; color: #555;">
+                            <i class="bi bi-geo-alt" style="color: #0d6efd;"></i> ${local.endereco}
+                        </p>
+                        <p style="margin-bottom: 0; font-size: 0.8em; color: #666;">
+                            <i class="bi bi-clock" style="color: #28a745;"></i> ${local.horario}
+                        </p>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markers[index] = marker;
+            });
+            
+            // ============================================
+            // INTERAÇÃO: CLICAR NA LISTA CENTRALIZA NO MAPA
+            // ============================================
+            
+            const itensLista = document.querySelectorAll('.local-item');
+            
+            itensLista.forEach((item, index) => {
+                item.style.cursor = 'pointer';
+                item.style.transition = 'background-color 0.2s';
+                
+                item.addEventListener('click', function() {
+                    const lat = parseFloat(this.dataset.lat);
+                    const lng = parseFloat(this.dataset.lng);
+                    
+                    // Remove destaque de todos
+                    itensLista.forEach(i => i.classList.remove('ativo'));
+                    // Adiciona destaque no clicado
+                    this.classList.add('ativo');
+                    
+                    // Abre popup do marcador
+                    if (markers[index]) {
+                        setTimeout(() => {
+                            markers[index].openPopup();
+                        }, 800);
+                    }
+                });
+            });
+            
+            // ============================================
+            // FILTRO POR TIPO DE RESÍDUO
+            // ============================================
+            
+            const botoesFiltro = document.querySelectorAll('.filter-btn');
+            
+            botoesFiltro.forEach(botao => {
+                botao.addEventListener('click', function() {
+                    const tipoFiltro = this.dataset.tipo;
+                    
+                    // Atualiza botão ativo
+                    botoesFiltro.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filtra itens da lista
+                    itensLista.forEach((item, index) => {
+                        const categoriaItem = item.dataset.tipo;
+                        
+                        if (tipoFiltro === 'todos' || categoriaItem === tipoFiltro) {
+                            item.style.display = 'flex';
+                            if (markers[index]) markers[index].addTo(map);
+                        } else {
+                            item.style.display = 'none';
+                            if (markers[index]) map.removeLayer(markers[index]);
+                        }
+                    });
+                });
+            });
+            
+            // ============================================
+            // BOTÃO "MINHA LOCALIZAÇÃO" (opcional)
+            // ============================================
+            
+            L.control.locate = L.Control.extend({
+                onAdd: function(map) {
+                    const btn = L.DomUtil.create('button', 'leaflet-bar leaflet-control');
+                    btn.innerHTML = '<i class="bi bi-geo-alt-fill" style="color:#0d6efd;"></i>';
+                    btn.title = 'Minha localização';
+                    btn.style.cssText = 'width:34px;height:34px;font-size:18px;cursor:pointer;background:white;border:2px solid rgba(0,0,0,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;';
+                    
+                    btn.onclick = function() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(pos => {
+                                const lat = pos.coords.latitude;
+                                const lng = pos.coords.longitude;
+                                map.flyTo([lat, lng], 15);
+                                L.circleMarker([lat, lng], {
+                                    radius: 8,
+                                    fillColor: '#0d6efd',
+                                    color: '#fff',
+                                    weight: 2,
+                                    opacity: 1,
+                                    fillOpacity: 0.8
+                                }).addTo(map).bindPopup('Você está aqui!').openPopup();
+                            });
+                        }
+                    };
+                    return btn;
+                }
+            });
+            
+            new L.control.locate({ position: 'topright' }).addTo(map);
+            
+        });
+        // Ajusta o mapa para mostrar TODOS os marcadores de uma vez
+    const grupoMarcadores = L.featureGroup(Object.values(markers));
+    map.fitBounds(grupoMarcadores.getBounds().pad(0.15));
+    </script>
 </body>
 
 </html>
