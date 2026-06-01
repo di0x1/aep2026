@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        .navbar-custom {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 20px;
+        }
+
+        .nav-link {
+            color: #4a4a4a !important;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            color: #4CAF50 !important;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        .logo-text {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo-img {
+            height: 40px;
+            /* Ajuste conforme o tamanho desejado */
+            width: auto;
+            /* Mantém a proporção original */
+            display: block;
+        }
+
+        .profile-img {
+            width: 40px;
+            /* Define um tamanho fixo */
+            height: 40px;
+            object-fit: cover;
+            /* Garante que a foto não fique distorcida */
+            border-radius: 50%;
+            /* Mantém o formato circular */
+        }
+
+        /* Verde mais suave, similar ao das árvores */
+        .bg-custom-green {
+            background-color: #2D5A27 !important;
+        }
+
+        /* Estilo do círculo ao redor do ícone */
+        .icon-circle {
+            width: 65px;
+            height: 65px;
+            background-color: rgba(255, 255, 255, 0.2);
+            /* Círculo levemente transparente */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            /* Impede que o círculo encolha */
+        }
+
+        /* Isso força o ícone a ter um tamanho bem grande independente do container */
+        .bi {
+            font-size: 1.9rem !important;
+            /* Ajuste este valor conforme desejar (ex: 4rem, 5rem) */
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* Espaçamento entre o ícone e o texto */
+        .icon-wrapper {
+            margin-right: 20px;
+        }
+
+        .step-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background-color: #4CAF50;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .icon-circle-step {
+            width: 90px;
+            height: 90px;
+            background-color: #f4f7f4;
+            /* Verde bem clarinho */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Seta de conexão */
+        @media (min-width: 768px) {
+            .step-container {
+                position: relative;
+            }
+
+            .step-container:not(:last-child)::after {
+                content: "→";
+                position: absolute;
+                top: 35px;
+                right: -10px;
+                font-size: 1.5rem;
+                color: #999;
+            }
+        }
+
+        /* Cores personalizadas baseadas na imagem */
+        .bg-impact-card {
+            background-color: #f4f8f3;
+            /* Fundo verde muito claro do card */
+        }
+
+        .bg-icon-circle {
+            background-color: #e5efe1;
+            /* Fundo do círculo do ícone */
+            color: #3e6d2a;
+            /* Cor verde escura do ícone */
+        }
+
+        .text-impact-green {
+            color: #5c9942;
+            /* Cor verde do texto da porcentagem e botão */
+        }
+
+        .btn-impact {
+            color: #5c9942;
+            border-color: #5c9942;
+            font-weight: 500;
+        }
+
+        .btn-impact:hover {
+            background-color: #5c9942;
+            color: white;
+        }
+
+        .impact-desc-text {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .impact-perc-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        :root {
+            --brand-dark-green: #006838;
+            --brand-light-green: #e5f5ea;
+            --brand-muted-green: #4ca170;
+        }
+
+        /* Top Header Styles */
+        .subtitle-green {
+            color: var(--brand-muted-green);
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        /* Button Styles */
+        .btn-brand {
+            background-color: var(--brand-dark-green);
+            color: white;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-brand:hover {
+            background-color: #004d29;
+            color: white;
+        }
+
+        /* Card Styles */
+        .card-custom {
+            border: 1px solid #f0f4f1;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s;
+        }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-custom {
+            height: 140px;
+            object-fit: cover;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .card-title-custom {
+            color: var(--brand-dark-green);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text-custom {
+            font-size: 0.85rem;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        /* Badge over image */
+        .badge-overlap {
+            background-color: var(--brand-light-green);
+            color: var(--brand-dark-green);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.4em 0.8em;
+            border: 2px solid white;
+            /* Gives the cut-out effect over the image line */
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="logo.png" alt="Logo Ecotech" class="logo-img">
+            </a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Denunciar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Educação</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Pontos de Coleta</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Impacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
+                </ul>
+
+                <button class="btn btn-success">Entrar</button>
+                <button>Cadastrar</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container my-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-dark">Juntos por uma<br> cidade mais limpa <br> e sustentável.
+                    </h1>
+                    <p class="lead text-muted my-4">Denuncie o descarte irregulares, acompanhe<br> seu impacto e ajude
+                        a preservar o meio ambiente.</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-success btn-lg px-4">Fazer denúncia</button>
+                        <button class="btn btn-outline-success btn-lg px-4">Saiba mais</button>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <img src="hero-image.png" alt="Ecotech Ilustração" class="img-fluid">
+                </div>
+            </div>
+
+            <section class="container my-5">
+                <div class="row bg-custom-green text-white p-4 rounded-4 align-items-center">
+                    <div
+                        class="col-md-3 d-flex align-items-center mb-3 mb-md-0 border-end border-white border-opacity-25">
+                        <div class="icon-circle">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Geolocalização</h5>
+                            <small class="text-white-50">Denuncie com a localização exata.</small>
+                        </div>
+                    </div>
+
+                    <div
+                        class="col-md-3 d-flex align-items-center mb-3 mb-md-0 border-end border-white border-opacity-25">
+                        <div class="icon-circle">
+                            <i class="bi bi-camera-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Envie fotos</h5>
+                            <small class="text-white-50">Registre o local e ajude.</small>
+                        </div>
+                    </div>
+
+                    <div
+                        class="col-md-3 d-flex align-items-center mb-3 mb-md-0 border-end border-white border-opacity-25">
+                        <div class="icon-circle">
+                            <i class="bi bi-leaf-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Acompanhe</h5>
+                            <small class="text-white-50">Veja o andamento em tempo real.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-center">
+                        <div class="icon-circle">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Aprenda</h5>
+                            <small class="text-white-50">Dicas sobre o meio ambiente.</small>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!--NOSSO IMPACTO-->
+            <section class="container-fluid py-4">
+                <div class="row align-items-center">
+
+                    <div class="col-lg-3 mb-4 mb-lg-0 pe-lg-4">
+                        <h4 class="fw-bold d-flex align-items-center gap-2 mb-3">
+                            <i class="bi bi-leaf-fill text-impact-green"></i> Nosso impacto
+                        </h4>
+                        <p class="text-muted mb-4" style="font-size: 0.95rem;">
+                            Veja como estamos transformando nossa cidade juntos.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-9">
+                        <div class="row g-3 flex-nowrap overflow-auto pb-2" style="white-space: nowrap;">
+
+                            <div class="col-auto col-md-6 col-xl-3" style="min-width: 240px;">
+                                <div class="bg-impact-card p-3 rounded-4 d-flex align-items-center gap-3 h-100">
+                                    <div class="bg-icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                        style="width: 52px; height: 52px;">
+                                        <i class="bi bi-clipboard-check fs-4"></i>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h4 class="fw-bold mb-0">1.248</h4>
+                                        <span class="impact-desc-text mb-1">Denúncias realizadas</span>
+                                        <span class="text-impact-green impact-perc-text">+18% este mês</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto col-md-6 col-xl-3" style="min-width: 240px;">
+                                <div class="bg-impact-card p-3 rounded-4 d-flex align-items-center gap-3 h-100">
+                                    <div class="bg-icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                        style="width: 52px; height: 52px;">
+                                        <i class="bi bi-recycle fs-4"></i>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h4 class="fw-bold mb-0">25,6 <span class="fs-6 fw-normal">ton</span></h4>
+                                        <span class="impact-desc-text mb-1">Resíduos coletados</span>
+                                        <span class="text-impact-green impact-perc-text">+12% este mês</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto col-md-6 col-xl-3" style="min-width: 240px;">
+                                <div class="bg-impact-card p-3 rounded-4 d-flex align-items-center gap-3 h-100">
+                                    <div class="bg-icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                        style="width: 52px; height: 52px;">
+                                        <i class="bi bi-clock fs-4"></i>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h4 class="fw-bold mb-0">2,4 <span class="fs-6 fw-normal">dias</span></h4>
+                                        <span class="impact-desc-text mb-1">Tempo médio de resposta</span>
+                                        <span class="text-impact-green impact-perc-text">-15% este mês</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto col-md-6 col-xl-3" style="min-width: 240px;">
+                                <div class="bg-impact-card p-3 rounded-4 d-flex align-items-center gap-3 h-100">
+                                    <div class="bg-icon-circle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                        style="width: 52px; height: 52px;">
+                                        <i class="bi bi-people-fill fs-4"></i>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h4 class="fw-bold mb-0">892</h4>
+                                        <span class="impact-desc-text mb-1">Usuários engajados</span>
+                                        <span class="text-impact-green impact-perc-text">+20% este mês</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="container my-5 text-center">
+                <h5 class="text-success fw-bold">Como funciona</h5>
+                <h2 class="fw-bold mb-5">É simples e rápido</h2>
+
+                <div class="row g-4 align-items-start">
+                    <div class="col-md-3 step-container">
+                        <div class="step-wrapper">
+                            <span class="step-number">1</span>
+                            <div class="icon-circle-step mx-auto mb-3"><i
+                                    class="bi bi-geo-alt-fill text-success fs-2"></i></div>
+                        </div>
+                        <h5 class="fw-bold">Encontre</h5>
+                        <p class="text-muted small">Identifique um descarte irregular na sua região.</p>
+                    </div>
+                    <div class="col-md-3 step-container">
+                        <div class="step-wrapper">
+                            <span class="step-number">2</span>
+                            <div class="icon-circle-step mx-auto mb-3"><i
+                                    class="bi bi-camera-fill text-success fs-2"></i></div>
+                        </div>
+                        <h5 class="fw-bold">Registre</h5>
+                        <p class="text-muted small">Tire uma foto, descreva o problema e envie.</p>
+                    </div>
+                    <div class="col-md-3 step-container">
+                        <div class="step-wrapper">
+                            <span class="step-number">3</span>
+                            <div class="icon-circle-step mx-auto mb-3"><i class="bi bi-send-fill text-success fs-2"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Envie</h5>
+                        <p class="text-muted small">Sua denúncia vai para a gestão responsável.</p>
+                    </div>
+                    <div class="col-md-3 step-container">
+                        <div class="step-wrapper">
+                            <span class="step-number">4</span>
+                            <div class="icon-circle-step mx-auto mb-3"><i
+                                    class="bi bi-check-circle-fill text-success fs-2"></i></div>
+                        </div>
+                        <h5 class="fw-bold">Acompanhe</h5>
+                        <p class="text-muted small">Veja o andamento e o impacto da sua ação.</p>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="container-fluid py-5 px-lg-5">
+
+                <div class="row mb-5">
+                    <div class="col-12 text-center">
+                        <span class="text-uppercase subtitle-green d-block mb-2">Aprenda, Informe-se, Transforme</span>
+                        <h2 class="fw-bold">Educação ambiental ao seu alcance</h2>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-lg-9">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card card-custom h-100 bg-white">
+                                    <div class="position-relative">
+                                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=400&h=250"
+                                            class="card-img-top card-img-custom" alt="Tipos de resíduos">
+                                        <span
+                                            class="badge badge-overlap rounded-pill position-absolute bottom-0 start-0 translate-middle-y ms-3">
+                                            RESÍDUOS
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="card-body pt-3">
+                                        <h5 class="card-title-custom mt-2">Tipos de resíduos</h5>
+                                        <p class="card-text-custom mb-0">Saiba como separar e descartar corretamente.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card card-custom h-100 bg-white">
+                                    <div class="position-relative">
+                                        <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&q=80&w=400&h=250"
+                                            class="card-img-top card-img-custom" alt="Locais de coleta">
+                                        <span
+                                            class="badge badge-overlap rounded-pill position-absolute bottom-0 start-0 translate-middle-y ms-3">
+                                            COLETA
+                                        </span>
+                                    </div>
+                                    <div class="card-body pt-3">
+                                        <h5 class="card-title-custom mt-2">Locais de coleta</h5>
+                                        <p class="card-text-custom mb-0">Encontre ecopontos e locais de descarte
+                                            próximos a você.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card card-custom h-100 bg-white">
+                                    <div class="position-relative">
+                                        <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=400&h=250"
+                                            class="card-img-top card-img-custom" alt="Conscientização">
+                                        <span
+                                            class="badge badge-overlap rounded-pill position-absolute bottom-0 start-0 translate-middle-y ms-3">
+                                            CONSCIENTIZAÇÃO
+                                        </span>
+                                    </div>
+                                    <div class="card-body pt-3">
+                                        <h5 class="card-title-custom mt-2">Conscientização</h5>
+                                        <p class="card-text-custom mb-0">Pequenas atitudes geram grandes transformações.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card card-custom h-100 bg-white">
+                                    <div class="position-relative">
+                                        <img src="https://images.unsplash.com/photo-1528323273322-d81458248d40?auto=format&fit=crop&q=80&w=400&h=250"
+                                            class="card-img-top card-img-custom" alt="Dicas sustentáveis">
+                                        <span
+                                            class="badge badge-overlap rounded-pill position-absolute bottom-0 start-0 translate-middle-y ms-3">
+                                            DICAS
+                                        </span>
+                                    </div>
+                                    <div class="card-body pt-3">
+                                        <h5 class="card-title-custom mt-2">Dicas sustentáveis</h5>
+                                        <p class="card-text-custom mb-0">Práticas simples para um dia a dia mais
+                                            sustentável.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+    </main>
+</body>
+
+</html>
