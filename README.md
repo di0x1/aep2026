@@ -84,7 +84,7 @@ cp .env.example .env      # no Windows: copy .env.example .env
 docker compose up --build
 ```
 
-A aplicação ficará disponível em **http://localhost**.
+A aplicação ficará disponível em **http://localhost:8081**.
 
 O serviço de aplicação, ao subir, automaticamente:
 1. aguarda o PostgreSQL ficar disponível;
@@ -123,7 +123,7 @@ docker compose exec web flask db upgrade
 
 ## 👤 Como acessar o sistema
 
-Acesse **http://localhost** e crie sua conta em **/registro**, ou use o usuário demo
+Acesse **http://localhost:8081** e crie sua conta em **/registro**, ou use o usuário demo
 criado automaticamente pelo seed:
 
 - **E-mail:** `joao@ecotech.com`
