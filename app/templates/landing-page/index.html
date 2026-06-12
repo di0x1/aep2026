@@ -288,7 +288,7 @@
     <nav id="mainNav" class="navbar navbar-expand-lg navbar-custom fixed-top shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="#inicio">
-                <img src="logo.png" alt="Logo Ecotech" class="logo-img">
+                <img src="/static/landing/logo.png" alt="Logo Ecotech" class="logo-img">
             </a>
 
             <div class="collapse navbar-collapse">
@@ -315,13 +315,13 @@
                         <h1 class="display-4 fw-bold text-dark">Juntos por uma<br> cidade mais limpa <br> e sustentável.</h1>
                         <p class="lead text-muted my-4">Denuncie o descarte irregular, acompanhe<br> seu impacto e ajude a preservar o meio ambiente.</p>
                         <div class="d-flex gap-3">
-                            <button class="btn btn-success btn-lg px-4">Fazer denúncia</button>
-                            <button class="btn btn-outline-success btn-lg px-4">Saiba mais</button>
+                            <button type="button" class="btn btn-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#loginModal">Fazer denúncia</button>
+                            <a href="#como-funciona" class="btn btn-outline-success btn-lg px-4">Saiba mais</a>
                         </div>
                     </div>
 
                     <div class="col-lg-6 mt-4 mt-lg-0">
-                        <img src="hero-image.png" alt="Ecotech Ilustração" class="img-fluid">
+                        <img src="/static/landing/hero-image.png" alt="Ecotech Ilustração" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -574,7 +574,7 @@
         <div class="container">
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 pe-lg-5">
-                    <img src="logo.png" alt="Logo Ecotech" class="mb-4" height="40" style="filter: brightness(0) invert(1);">
+                    <img src="/static/landing/logo.png" alt="Logo Ecotech" class="mb-4" height="40" style="filter: brightness(0) invert(1);">
                     <p class="small text-white-50">
                         Juntos por uma cidade mais limpa e sustentável. Denuncie o descarte irregular, acompanhe seu impacto e ajude a preservar o meio ambiente para as futuras gerações.
                     </p>
@@ -627,7 +627,7 @@
                 <div class="modal-body p-4 p-md-5">
                     
                     <div class="text-center mb-4">
-                        <img src="logo.png" alt="Logo" height="45">
+                        <img src="/static/landing/logo.png" alt="Logo" height="45">
                     </div>
                     
                     <div class="text-center mb-4">
@@ -635,13 +635,13 @@
                         <p class="text-muted" style="font-size: 0.95rem;">Acesse sua conta do Ecotech</p>
                     </div>
 
-                    <form id="formLogin" novalidate>
+                    <form id="formLogin" method="POST" action="/login" novalidate>
                         
                         <div class="mb-4">
                             <label for="loginEmail" class="form-label fw-bold text-dark mb-2" style="font-size: 0.8rem; text-transform: uppercase;">Email ou Documento</label>
                             <div class="position-relative input-icon-wrapper">
                                 <i class="bi bi-envelope input-icon-left"></i>
-                                <input type="email" class="form-control" id="loginEmail" placeholder="Digite seu email ou documento" required>
+                                <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Digite seu email ou documento" required>
                                 <div class="invalid-feedback ps-2">Por favor, insira um e-mail válido.</div>
                             </div>
                         </div>
@@ -650,7 +650,7 @@
                             <label for="loginSenha" class="form-label fw-bold text-dark mb-2" style="font-size: 0.8rem; text-transform: uppercase;">Senha</label>
                             <div class="position-relative input-icon-wrapper">
                                 <i class="bi bi-lock input-icon-left"></i>
-                                <input type="password" class="form-control" id="loginSenha" placeholder="Digite sua senha" required>
+                                <input type="password" class="form-control" id="loginSenha" name="senha" placeholder="Digite sua senha" required>
                                 <i class="bi bi-eye input-icon-right toggle-password"></i>
                                 <div class="invalid-feedback ps-2">A senha é obrigatória.</div>
                             </div>
@@ -687,7 +687,7 @@
                 <div class="modal-body p-4 p-md-5">
                     
                     <div class="text-center mb-4">
-                        <img src="logo.png" alt="Logo" height="45">
+                        <img src="/static/landing/logo.png" alt="Logo" height="45">
                     </div>
                     
                     <div class="text-center mb-4">
@@ -695,13 +695,13 @@
                         <p class="text-muted" style="font-size: 0.95rem;">Junte-se ao Ecotech e faça a diferença</p>
                     </div>
 
-                    <form id="formCadastro" novalidate>
+                    <form id="formCadastro" method="POST" action="/registro" novalidate>
                         
                         <div class="mb-3">
                             <label for="cadNome" class="form-label fw-bold text-dark mb-2" style="font-size: 0.8rem; text-transform: uppercase;">Nome Completo</label>
                             <div class="position-relative input-icon-wrapper">
                                 <i class="bi bi-person input-icon-left"></i>
-                                <input type="text" class="form-control" id="cadNome" placeholder="Digite seu nome completo" required>
+                                <input type="text" class="form-control" id="cadNome" name="nome" placeholder="Digite seu nome completo" required>
                                 <div class="invalid-feedback ps-2">O nome completo é obrigatório.</div>
                             </div>
                         </div>
@@ -710,7 +710,7 @@
                             <label for="cadEmail" class="form-label fw-bold text-dark mb-2" style="font-size: 0.8rem; text-transform: uppercase;">E-mail</label>
                             <div class="position-relative input-icon-wrapper">
                                 <i class="bi bi-envelope input-icon-left"></i>
-                                <input type="email" class="form-control" id="cadEmail" placeholder="Digite seu e-mail" required>
+                                <input type="email" class="form-control" id="cadEmail" name="email" placeholder="Digite seu e-mail" required>
                                 <div class="invalid-feedback ps-2">Por favor, insira um e-mail válido.</div>
                             </div>
                         </div>
@@ -719,7 +719,7 @@
                             <label for="cadSenha" class="form-label fw-bold text-dark mb-2" style="font-size: 0.8rem; text-transform: uppercase;">Senha</label>
                             <div class="position-relative input-icon-wrapper">
                                 <i class="bi bi-lock input-icon-left"></i>
-                                <input type="password" class="form-control" id="cadSenha" minlength="6" placeholder="Crie uma senha" required>
+                                <input type="password" class="form-control" id="cadSenha" name="senha" minlength="6" placeholder="Crie uma senha" required>
                                 <i class="bi bi-eye input-icon-right toggle-password"></i>
                                 <div class="invalid-feedback ps-2">A senha deve conter no mínimo 6 caracteres.</div>
                             </div>
@@ -860,31 +860,24 @@
                 cadConfSenha.addEventListener('input', validarSenhas);
             }
 
-            // Submissões simuladas
+            // Submissões reais (POST para o backend Flask)
             if (formLogin) {
                 formLogin.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    
-                    if (formLogin.checkValidity()) {
-                        window.location.href = '../inicio.html';
+                    if (!formLogin.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
                     }
-                    
                     formLogin.classList.add('was-validated');
                 }, false);
             }
 
             if (formCadastro) {
                 formCadastro.addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    
-                    validarSenhas(); 
-
-                    if (formCadastro.checkValidity()) {
-                        window.location.href = '../inicio.html';
+                    validarSenhas();
+                    if (!formCadastro.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
                     }
-                    
                     formCadastro.classList.add('was-validated');
                 }, false);
             }

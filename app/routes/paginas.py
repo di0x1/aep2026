@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, render_template
 from flask_login import login_required
 
 paginas = Blueprint("paginas", __name__)
@@ -6,7 +6,7 @@ paginas = Blueprint("paginas", __name__)
 
 @paginas.route("/")
 def raiz():
-    return redirect(url_for("paginas.inicio"))
+    return render_template("landing-page/index.html")
 
 
 @paginas.route("/inicio")
